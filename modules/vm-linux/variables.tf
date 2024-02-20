@@ -5,7 +5,7 @@ variable "vm_name" {
     error_message = "Limit host name length to less then 15 character"
   }
 }
-variable "env" {}
+# variable "env" {}
 variable "location" {}
 variable "resource_group_name" {}
 variable "subnet_id" {}

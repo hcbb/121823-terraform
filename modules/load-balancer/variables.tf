@@ -6,7 +6,7 @@ variable "sku" {
 }
 variable "frontend_ip_configurations" {
   description = "List of front end ip configurations."
-  type = map(object({
+  type        = map(object({
     name                 = string
     public_ip_address_id = string
     subnet_id            = string
@@ -32,13 +32,13 @@ variable "pool_associations" {
 }
 variable "rules" {
   type = map(object({
-    name = string
-    protocol = string
-    probe_id = string
-    frontend_port = number
-    backend_port = number
-    frontend_ip_configuration_name = number
-    backend_address_pool_ids = string
+    name                           = string
+    protocol                       = string
+    probe_id                       = string
+    frontend_port                  = number
+    backend_port                   = number
+    frontend_ip_configuration_name = string
+    backend_address_pool_ids       = string
   }))
 }
 variable "tags" {}

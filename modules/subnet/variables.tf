@@ -4,7 +4,7 @@ variable "resource_group_name" {}
 variable "subnet_name" {}
 variable "net_name" {}
 variable "route_table_id" {}
-variable "service_endpoints" {}
+#variable "service_endpoints" {}
 variable "tags" {}
 
 # Optional

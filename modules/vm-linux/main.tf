@@ -63,6 +63,18 @@ resource "azurerm_virtual_machine" "main" {
       identity_ids = [var.managed_identity]
     }
   }
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y apache2",
+      "sudo systemctl start apache2",
+      "sudo systemctl enable apache2",
+    ]
+  }
+  provisioner "file" {
+    source      = "../site/index.html"
+    destination = "/var/www/html/index.html"
+  }
 
   tags = merge(var.tags, {
     shutdown_after_hours = var.shutdown_after_hours,
@@ -112,9 +124,9 @@ resource "azurerm_network_interface_security_group_association" "main" {
 }
 
 resource "azurerm_backup_protected_vm" "vm1" {
-  count = var.enable_backup == true ? 1 : 0
+  count               = var.enable_backup == true ? 1 : 0
   resource_group_name = var.backup_vault_resource_group_name
-  recovery_vault_name = var.backup_vault_name 
+  recovery_vault_name = var.backup_vault_name
   source_vm_id        = azurerm_virtual_machine.main.id
   backup_policy_id    = var.backup_policy_id
 }
