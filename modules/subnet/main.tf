@@ -5,7 +5,7 @@ resource "azurerm_subnet" "main" {
   address_prefixes     = var.add_prefixes
   #private_endpoint_network_policies_enabled     = var.private_endpoint_network_policies_enabled
   #private_link_service_network_policies_enabled = var.private_link_service_network_policies_enabled
-  service_endpoints = var.service_endpoints
+  #service_endpoints = var.service_endpoints
 
   dynamic "delegation" {
     for_each = var.delegation
