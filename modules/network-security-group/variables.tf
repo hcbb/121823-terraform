@@ -21,7 +21,7 @@ variable "security_rules" {
     destination_port_range     = string
     destination_port_ranges    = optional(list(string))
     source_address_prefix      = string
-    source_address_prefixes    = list(string)
+    source_address_prefixes    = optional(list(string))
     destination_address_prefix = string
     destination_address_prefixes = optional(list(string))
   }))

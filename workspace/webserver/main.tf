@@ -69,34 +69,49 @@ module "lb" {
   location              = var.location
   resource_group_name   = var.resource_group_name
   backend_address_pools = {
-    name = "backend-pool"
+    pool1 = {
+      name = "backend-pool"
+    }
   }
   pool_associations = {
-    network_interface_id  = "${module.vm.vm_primary_interface_id}"
-    ip_configuration_name = "ip-name"
+    pool1 = {
+      pool_id               = "pool1"
+      network_interface_id  = module.vm.vm_primary_interface_id
+      ip_configuration_name = "ip-name"
+    }
   }
   probes = {
-    name = "lb-probe"
-    port = 80
-  }
-  rules = [
-    {
-      name          = "lb-rule-http"
-      protocol      = "tcp"
-      frontend_port = 80
-      backend_port  = 80
-    },
-    {
-      name          = "lb-rule-https"
-      protocol      = "tcp"
-      frontend_port = 443
-      backend_port  = 80
+    pool1 = {
+      name = "lb-probe"
+      port = 80
     }
-  ]
+  }
+  rules = {
+    inbound-http = {
+      name                           = "lb-rule-http"
+      protocol                       = "tcp"
+      frontend_port                  = 80
+      backend_port                   = 80
+      probe_id                       = "pool1"
+      frontend_ip_configuration_name = "pool1"
+      backend_address_pool_ids       = "pool1"
+    }
+    inbound-https = {
+      name                           = "lb-rule-https"
+      protocol                       = "tcp"
+      frontend_port                  = 443
+      backend_port                   = 80
+      probe_id                       = "pool1"
+      frontend_ip_configuration_name = "pool1"
+      backend_address_pool_ids       = "pool1"
+    }
+  }
   frontend_ip_configurations = {
-    name      = "publicIP"
-    subnet_id = module.subnet.subnet_id
-    public_ip = azurerm_public_ip.lb_public_ip.name
+    pool1 = {
+      name                 = "publicIP"
+      subnet_id            = module.subnet.subnet_id
+      public_ip_address_id = azurerm_public_ip.lb_public_ip.name
+    }
   }
   tags = var.tags
 }
